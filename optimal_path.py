@@ -1,14 +1,22 @@
 import numpy as np
 
-def accumulator(image):
-    
+def accumulator_and_backtracing_image(image):
+    """
+    Calculates accumulator and backtracing image
+    """
+    m, n = image.shape
+    backtracing_image = np.zeros((m, n))
     for i, row in enumerate(image[1:], start = 1):
         for j, val in enumerate(row):
-            image[i, j] += np.min([image[i - 1, np.max([0, j - 1])], 
-                                   image[i - 1, j], 
-                                   image[i - 1, np.min([j + 1, image.shape[1] - 1])]])
+            values_to_choose_from = [
+                image[i - 1, np.max([0, j - 1])], 
+                image[i - 1, j], 
+                image[i - 1, np.min([j + 1, image.shape[1] - 1])]
+            ]
+            image[i, j] += np.min(values_to_choose_from)
+            backtracing_image[i, j] = j + np.argmin(values_to_choose_from)
 
-    return image
+    return image, backtracing_image
 
 def optimal_path(accumulator_image, optimum, optimum_idx):
     if optimum_idx:
@@ -36,7 +44,7 @@ def optimal_path(accumulator_image, optimum, optimum_idx):
 
 
 def path_tracing(image):
-    a_image = accumulator(image)
+    a_image, _ = accumulator_and_backtracing_image(image)
     o_path = optimal_path(a_image, [], [])
     
     return a_image, o_path

@@ -27,9 +27,13 @@ def pca_analysis(path, dtype = "txt", skl = True):
         data = np.loadtxt(path, comments="%")
     elif dtype == "image":
         images = glob.glob(path + "*")
-        w, h = plt.imread(images[0]).shape
-        
-        data = np.zeros((len(images), w * h))
+        if len(io.imread(images[0]).shape) == 3:
+            w, h, r = io.imread(images[0]).shape
+            data = np.zeros((len(images), w * h * r))
+        else:
+            w, h = io.imread(images[0]).shape
+            data = np.zeros((len(images), w * h))
+            
         
         for idx, image in enumerate(images):
             img_data = plt.imread(image)

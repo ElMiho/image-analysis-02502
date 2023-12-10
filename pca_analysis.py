@@ -4,7 +4,7 @@ from sklearn import decomposition
 import glob
 from skimage import io
 
-def pca_analysis(path, dtype = "txt", skl = True):
+def pca_analysis(path, n_comp = None, dtype = "txt", skl = True):
     """pca_analysis
 
     Args:
@@ -54,7 +54,7 @@ def pca_analysis(path, dtype = "txt", skl = True):
         # project data onto pca vectors
         pc_proj = eig_vectors.T.dot(data.T)
     else:
-        pca = decomposition.PCA()
+        pca = decomposition.PCA(n_comp)
         pca.fit(data)
 
         eig_values = pca.explained_variance_
@@ -65,4 +65,6 @@ def pca_analysis(path, dtype = "txt", skl = True):
         pc_proj = pca.transform(data)
     
     # MIGHT fail... for some reason the f22 set doesn't give the right answer
+    # NOTE!!!! glob changes the order of the indices, so have a look at the glob indices!!
+    # if you need the order of images of any sort
     return data, eig_values, eig_vectors, v_explained, pc_proj

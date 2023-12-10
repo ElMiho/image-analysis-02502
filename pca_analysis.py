@@ -51,13 +51,13 @@ def pca_analysis(path, dtype = "txt", skl = True):
     else:
         pca = decomposition.PCA()
         pca.fit(data)
-        pca.fit_transform()
+
         eig_values = pca.explained_variance_
         v_explained = pca.explained_variance_ratio_
         eig_vectors = pca.components_
         eig_vectors = eig_vectors.T
         
-        pc_proj = eig_vectors.T.dot(data.T)
+        pc_proj = pca.transform(data)
     
     # MIGHT fail... for some reason the f22 set doesn't give the right answer
     return eig_values, eig_vectors, v_explained, pc_proj

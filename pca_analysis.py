@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import decomposition
 import glob
+from skimage import io
 
 def pca_analysis(path, dtype = "txt", skl = True):
     """pca_analysis
@@ -41,7 +42,7 @@ def pca_analysis(path, dtype = "txt", skl = True):
     else:
         raise SyntaxError("You need to specify how the data should be read")
 
-    if not skl or data.shape[0] >= data.shape[1]:
+    if not skl and data.shape[0] >= data.shape[1]:
         # centralize
         data = (data - data.mean(axis = 0))
         
@@ -64,4 +65,4 @@ def pca_analysis(path, dtype = "txt", skl = True):
         pc_proj = pca.transform(data)
     
     # MIGHT fail... for some reason the f22 set doesn't give the right answer
-    return eig_values, eig_vectors, v_explained, pc_proj
+    return data, eig_values, eig_vectors, v_explained, pc_proj

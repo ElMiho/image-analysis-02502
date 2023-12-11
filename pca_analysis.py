@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import decomposition
 import glob
@@ -37,7 +36,7 @@ def pca_analysis(path, n_comp = None, dtype = "txt", skl = True):
             
         
         for idx, image in enumerate(images):
-            img_data = plt.imread(image)
+            img_data = io.imread(image)
             data[idx] = img_data.flatten()   
     else:
         raise SyntaxError("You need to specify how the data should be read")
